@@ -1,0 +1,160 @@
+import React from "react";
+
+interface BrandLogoProps {
+  variant?: "dark" | "light";
+  size?: "sm" | "md" | "lg";
+  showTagline?: boolean;
+  iconOnly?: boolean;
+}
+
+export function LemuryMark({
+  className = "w-9 h-9",
+  color = "#1B6B36",
+}: {
+  className?: string;
+  color?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 100 100"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      {/*
+        7 Segmentos da Cauda Anelada do Lêmure (arco espiral da base esquerda até o topo direito)
+      */}
+      {/* Segmento 1 — Base inferior afilada da cauda */}
+      <path
+        d="M 48.5 96.5 C 33.0 95.5 18.5 85.5 11.2 71.5 C 14.8 68.2 19.6 66.8 24.5 67.2 C 29.8 78.2 38.5 87.8 50.2 93.8 C 50.5 95.2 49.6 96.5 48.5 96.5 Z"
+        fill={color}
+      />
+
+      {/* Segmento 2 — Lateral inferior esquerda */}
+      <path
+        d="M 9.2 66.8 C 5.6 58.2 4.8 48.8 6.4 40.2 C 11.2 40.4 15.8 42.2 19.5 45.2 C 17.5 51.0 18.2 57.2 21.0 62.5 C 16.5 62.6 12.4 64.2 9.2 66.8 Z"
+        fill={color}
+      />
+
+      {/* Segmento 3 — Lateral média esquerda */}
+      <path
+        d="M 7.5 35.4 C 9.8 26.8 14.5 19.2 21.0 13.5 C 25.8 16.5 29.4 21.0 31.2 26.4 C 26.2 30.0 22.8 34.8 20.8 40.5 C 16.8 37.8 12.2 36.0 7.5 35.4 Z"
+        fill={color}
+      />
+
+      {/* Segmento 4 — Superior esquerdo */}
+      <path
+        d="M 24.8 10.4 C 31.8 5.2 40.4 2.4 49.2 2.2 C 50.8 7.8 50.4 14.0 48.0 19.4 C 42.6 19.8 37.6 21.6 33.8 24.2 C 32.0 18.6 28.8 13.8 24.8 10.4 Z"
+        fill={color}
+      />
+
+      {/* Segmento 5 — Topo central */}
+      <path
+        d="M 54.0 2.5 C 62.8 3.5 71.0 7.2 77.4 13.2 C 74.8 18.8 69.8 23.2 63.8 25.4 C 59.8 21.8 55.2 19.8 50.8 19.2 C 53.2 14.0 54.2 8.2 54.0 2.5 Z"
+        fill={color}
+      />
+
+      {/* Segmento 6 — Superior direito */}
+      <path
+        d="M 80.6 16.8 C 86.2 23.0 89.5 30.8 90.2 39.0 C 89.8 43.2 85.8 45.8 81.5 44.8 C 77.2 43.8 74.5 39.6 74.8 35.0 C 74.8 31.8 73.2 28.6 70.2 26.2 C 75.2 24.0 78.8 20.6 80.6 16.8 Z"
+        fill={color}
+      />
+
+      {/*
+        Cabeça e Orelhas do Lêmure (simétrica, encaixada no arco da cauda)
+      */}
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M 56.5 38.5 C 62.5 38.5 67.8 40.5 71.5 43.8 C 76.8 39.8 83.8 38.5 89.2 40.8 C 91.2 46.8 88.8 54.8 83.2 59.5 C 81.8 55.2 79.2 51.8 75.8 49.5 C 71.8 46.8 65.8 46.5 60.5 49.5 L 56.5 52.2 L 52.5 49.5 C 47.2 46.5 41.2 46.8 37.2 49.5 C 33.8 51.8 31.2 55.2 29.8 59.5 C 24.2 54.8 21.8 46.8 23.8 40.8 C 29.2 38.5 36.2 39.8 41.5 43.8 C 45.2 40.5 50.5 38.5 56.5 38.5 Z M 33.5 45.2 C 30.5 44.5 28.2 45.2 27.5 46.8 C 27.2 49.5 28.8 52.8 31.5 54.8 C 32.5 51.5 34.5 48.5 37.2 46.8 C 36.0 45.8 34.8 45.4 33.5 45.2 Z M 79.5 45.2 C 82.5 44.5 84.8 45.2 85.5 46.8 C 85.8 49.5 84.2 52.8 81.5 54.8 C 80.5 51.5 78.5 48.5 75.8 46.8 C 77.0 45.8 78.2 45.4 79.5 45.2 Z"
+        fill={color}
+      />
+
+      {/* Olho Esquerdo (mancha ocular + pupila iluminada) */}
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M 45.2 53.5 C 50.0 53.5 53.8 57.6 53.8 62.8 C 53.8 68.0 50.0 72.0 45.2 72.0 C 40.4 72.0 36.5 68.0 36.5 62.8 C 36.5 57.6 40.4 53.5 45.2 53.5 Z M 45.5 59.2 C 47.3 59.2 48.8 60.7 48.8 62.5 C 48.8 64.3 47.3 65.8 45.5 65.8 C 43.7 65.8 42.2 64.3 42.2 62.5 C 42.2 60.7 43.7 59.2 45.5 59.2 Z"
+        fill={color}
+      />
+
+      {/* Olho Direito (mancha ocular + pupila iluminada) */}
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M 67.8 53.5 C 72.6 53.5 76.5 57.6 76.5 62.8 C 76.5 68.0 72.6 72.0 67.8 72.0 C 63.0 72.0 59.2 68.0 59.2 62.8 C 59.2 57.6 63.0 53.5 67.8 53.5 Z M 67.5 59.2 C 69.3 59.2 70.8 60.7 70.8 62.5 C 70.8 64.3 69.3 65.8 67.5 65.8 C 65.7 65.8 64.2 64.3 64.2 62.5 C 64.2 60.7 65.7 59.2 67.5 59.2 Z"
+        fill={color}
+      />
+
+      {/* Focinho e Queixo Central */}
+      <path
+        d="M 56.5 68.2 C 59.5 68.2 61.8 70.2 61.8 72.5 C 61.8 74.8 59.2 77.2 56.5 77.8 C 53.8 77.2 51.2 74.8 51.2 72.5 C 51.2 70.2 53.5 68.2 56.5 68.2 Z"
+        fill={color}
+      />
+      <path
+        d="M 43.5 74.2 C 46.8 78.2 51.4 80.5 56.5 80.5 C 61.6 80.5 66.2 78.2 69.5 74.2 C 67.2 81.2 62.4 85.8 56.5 85.8 C 50.6 85.8 45.8 81.2 43.5 74.2 Z"
+        fill={color}
+      />
+    </svg>
+  );
+}
+
+export function BrandLogo({
+  variant = "dark",
+  size = "md",
+  showTagline = false,
+  iconOnly = false,
+}: BrandLogoProps) {
+  const isLight = variant === "light";
+
+  const config = {
+    sm: {
+      icon: "w-9 h-9",
+      text: "text-[1.45rem] tracking-[-0.02em]",
+      gap: "gap-2.5",
+    },
+    md: {
+      icon: "w-10 h-10",
+      text: "text-[1.7rem] tracking-[-0.02em]",
+      gap: "gap-3",
+    },
+    lg: {
+      icon: "w-12 h-12",
+      text: "text-[2.05rem] tracking-[-0.025em]",
+      gap: "gap-3.5",
+    },
+  }[size];
+
+  // Official colors: vibrant forest green icon (#1B6B36) + deep dark institutional text (#062D27) on light backgrounds, or cream on dark backgrounds
+  const iconColor = isLight ? "#F5F2E9" : "#1B6B36";
+  const textColorClass = isLight ? "text-lemury-cream" : "text-lemury-green";
+
+  return (
+    <div className={`inline-flex items-center ${config.gap} select-none group`}>
+      <LemuryMark
+        className={`${config.icon} shrink-0 transition-transform duration-300 group-hover:scale-[1.03]`}
+        color={iconColor}
+      />
+
+      {!iconOnly && (
+        <div className="flex flex-col">
+          <span
+            className={`font-sans font-medium leading-none ${config.text} ${textColorClass}`}
+          >
+            Lemury
+          </span>
+          {showTagline && (
+            <span
+              className={`text-[10px] uppercase tracking-[0.2em] mt-1 font-sans ${
+                isLight ? "text-lemury-cream/65" : "text-lemury-stone"
+              }`}
+            >
+              E-commerce & Digital Studio
+            </span>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
