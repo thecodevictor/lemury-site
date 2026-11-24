@@ -40,28 +40,26 @@ export function AboutSection() {
             <span className="text-xs font-medium uppercase tracking-[0.2em] text-lemury-green/75">
               Sobre a Lemury
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-[2.75rem] font-medium text-lemury-green leading-[1.12]">
-              Seu negócio já existe.{" "}
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-[2.65rem] font-medium text-lemury-green leading-[1.12]">
+              Especialistas em estruturar{" "}
               <span className="italic font-normal text-lemury-green-alt">
-                Nós estruturamos sua operação no digital.
+                operações de e-commerce profissionais.
               </span>
             </h2>
           </div>
 
-          <div className="lg:col-span-7 space-y-5 text-base sm:text-lg text-lemury-stone leading-relaxed">
+          <div className="lg:col-span-7 space-y-4 text-base sm:text-lg text-lemury-stone leading-relaxed">
             <p className="text-lemury-black/85">
-              A Lemury é uma empresa especializada na criação e implantação de
-              lojas virtuais profissionais para marcas que comercializam
-              produtos físicos. Não atuamos como uma agência genérica: nosso
-              foco é exclusivamente construir o canal de vendas online que a sua
+              A Lemury é especializada na criação e implantação de lojas
+              virtuais para marcas que comercializam produtos físicos. Nosso
+              foco exclusivo é construir o canal de vendas online que a sua
               operação precisa para crescer com organização.
             </p>
             <p>
-              Cuidamos de toda a implantação técnica e visual — do planejamento
-              do catálogo às integrações de pagamento e frete — e entregamos a
-              loja pronta, registrada em sua titularidade, para que você tenha
-              total autonomia na gestão diária sem depender permanentemente de
-              suporte técnico.
+              Cuidamos de toda a implantação técnica e visual — do catálogo às
+              integrações de pagamento e frete — e entregamos a loja pronta,
+              registrada em sua titularidade, para que você tenha autonomia na
+              gestão diária sem depender de suporte técnico.
             </p>
           </div>
         </div>
