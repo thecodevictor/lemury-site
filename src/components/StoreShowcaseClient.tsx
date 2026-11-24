@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   ConceptualProject,
@@ -50,6 +50,37 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
   const [cep, setCep] = useState("");
   const [shippingCalculated, setShippingCalculated] = useState(false);
   const [checkoutDone, setCheckoutDone] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+
+  // Horizontal drag-to-scroll for categories row
+  const catScrollRef = useRef<HTMLDivElement | null>(null);
+  const isDraggingCat = useRef(false);
+  const dragStartX = useRef(0);
+  const dragScrollLeft = useRef(0);
+  const dragMoved = useRef(false);
+
+  const handleCatMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!catScrollRef.current) return;
+    isDraggingCat.current = true;
+    dragMoved.current = false;
+    dragStartX.current = e.pageX - catScrollRef.current.offsetLeft;
+    dragScrollLeft.current = catScrollRef.current.scrollLeft;
+  };
+
+  const handleCatMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDraggingCat.current || !catScrollRef.current) return;
+    const x = e.pageX - catScrollRef.current.offsetLeft;
+    const walk = x - dragStartX.current;
+    if (Math.abs(walk) > 5) {
+      dragMoved.current = true;
+    }
+    catScrollRef.current.scrollLeft = dragScrollLeft.current - walk;
+  };
+
+  const handleCatMouseUp = () => {
+    isDraggingCat.current = false;
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
@@ -383,7 +414,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
             </div>
           </div>
 
-          {/* Categories Section — Editorial Symmetrical Grid */}
+          {/* Categories Section — Horizontal Circular Medallions with Drag/Swipe */}
           <div
             className={`${viewport === "mobile"
                 ? "px-5 pt-6 pb-2"
@@ -408,7 +439,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                         : "text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-normal text-[#5A534A]"
                     }
                   >
-                    Curadoria por categoria
+                    Categorias
                   </span>
                 </div>
 
@@ -426,76 +457,125 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                     className="font-serif italic text-xs sm:text-[13px]"
                     style={{ color: project.theme.textMuted }}
                   >
-                    0{project.products.length} peças na coleção
+                    Arraste ou selecione para filtrar →
                   </span>
                 )}
               </div>
 
-              {/* Symmetrical Category Grid: 1 Full-Width + 2x2 on Mobile | 5-Column Flush Row on Desktop */}
+              {/* Horizontal Scrollable / Draggable Circular Category Row */}
               <div
-                className={`grid gap-2 sm:gap-2.5 ${viewport === "mobile"
-                    ? "grid-cols-2"
-                    : "grid-cols-2 sm:grid-cols-5"
-                  }`}
+                ref={catScrollRef}
+                onMouseDown={handleCatMouseDown}
+                onMouseMove={handleCatMouseMove}
+                onMouseUp={handleCatMouseUp}
+                onMouseLeave={handleCatMouseUp}
+                className={`flex items-start ${
+                  viewport === "mobile"
+                    ? "gap-4"
+                    : "gap-5 sm:gap-8 sm:justify-between"
+                } overflow-x-auto no-scrollbar select-none cursor-grab active:cursor-grabbing py-1 -mx-1 px-1`}
               >
                 {project.categories.map((cat, idx) => {
                   const isActive = activeCategory === cat;
-                  const isFirst = idx === 0;
                   const count =
                     cat === defaultCategory
                       ? project.products.length
                       : project.products.filter((p) => p.category === cat).length;
 
+                  const catProduct =
+                    idx === 0
+                      ? project.products[5] || project.products[0]
+                      : project.products.find((p) => p.category === cat) ||
+                        project.products[0];
+
                   return (
                     <button
                       key={cat}
                       type="button"
-                      onClick={() => setActiveCategory(cat)}
-                      className={`group relative overflow-hidden flex items-center justify-between gap-2 px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-[6px] transition-all duration-300 border text-left ${isFirst
-                          ? viewport === "mobile"
-                            ? "col-span-2"
-                            : "col-span-2 sm:col-span-1"
-                          : "col-span-1"
-                        } ${isActive ? "shadow-sm" : "hover:opacity-90"}`}
-                      style={
-                        isActive
-                          ? {
-                            backgroundColor: project.theme.accent,
-                            color: project.theme.bgPrimary,
-                            borderColor: project.theme.accent,
-                          }
-                          : {
-                            backgroundColor: project.theme.bgSecondary,
-                            color: project.theme.textPrimary,
-                            borderColor: project.theme.border,
-                          }
-                      }
+                      onClick={() => {
+                        if (dragMoved.current) return;
+                        setActiveCategory(cat);
+                      }}
+                      className="group shrink-0 flex flex-col items-center gap-2 text-center focus:outline-none"
                     >
-                      <div className="flex items-center gap-2.5 min-w-0">
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full shrink-0 transition-transform duration-300 ${isActive ? "scale-110" : "opacity-45 group-hover:opacity-80"
+                      {/* Circular Product Photo Medallion */}
+                      <div
+                        className={`relative rounded-full p-[3px] transition-all duration-300 ${
+                          isActive
+                            ? "scale-[1.04] shadow-md"
+                            : "opacity-85 group-hover:opacity-100 group-hover:scale-[1.02]"
+                        }`}
+                        style={{
+                          border: isActive
+                            ? `2px solid ${project.theme.accent}`
+                            : `1px solid ${project.theme.border}`,
+                          backgroundColor: project.theme.bgPrimary,
+                        }}
+                      >
+                        <div
+                          className={`${
+                            viewport === "mobile"
+                              ? "w-16 h-16"
+                              : "w-16 h-16 sm:w-20 sm:h-20"
+                          } rounded-full overflow-hidden bg-neutral-200 relative`}
+                        >
+                          <img
+                            src={catProduct.image}
+                            alt={cat}
+                            draggable={false}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          />
+                          <div
+                            className={`absolute inset-0 transition-opacity duration-300 ${
+                              isActive
+                                ? "bg-black/0"
+                                : "bg-black/[0.06] group-hover:bg-black/0"
                             }`}
-                          style={{
-                            backgroundColor: isActive
-                              ? project.theme.bgPrimary
-                              : project.theme.accent,
-                          }}
-                        />
-                        <span className="font-serif text-[15px] sm:text-base tracking-[0.02em] font-normal truncate">
-                          {isFirst && viewport === "mobile"
-                            ? `${cat} — Coleção completa`
-                            : cat}
+                          />
+                        </div>
+
+                        {/* Subtle Item Count Pill on Bottom Right of Circle */}
+                        <span
+                          className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full text-[9px] font-medium flex items-center justify-center border shadow-sm transition-colors"
+                          style={
+                            isActive
+                              ? {
+                                  backgroundColor: project.theme.accent,
+                                  color: project.theme.bgPrimary,
+                                  borderColor: project.theme.bgPrimary,
+                                }
+                              : {
+                                  backgroundColor: project.theme.bgSecondary,
+                                  color: project.theme.textPrimary,
+                                  borderColor: project.theme.border,
+                                }
+                          }
+                        >
+                          {count}
                         </span>
                       </div>
 
-                      <span
-                        className={`text-[10px] tracking-[0.14em] px-2 py-0.5 rounded-full shrink-0 font-light transition-colors ${isActive
-                            ? "bg-white/15"
-                            : "bg-black/[0.04]"
+                      {/* Category Name Below Circle */}
+                      <div className="flex flex-col items-center gap-1">
+                        <span
+                          className={`font-serif ${
+                            viewport === "mobile"
+                              ? "text-xs"
+                              : "text-xs sm:text-[14px]"
+                          } tracking-[0.02em] whitespace-nowrap transition-all ${
+                            isActive ? "font-medium" : "font-normal opacity-80 group-hover:opacity-100"
                           }`}
-                      >
-                        0{count}
-                      </span>
+                          style={{ color: project.theme.textPrimary }}
+                        >
+                          {cat}
+                        </span>
+                        <span
+                          className={`h-[1.5px] rounded-full transition-all duration-300 ${
+                            isActive ? "w-5 opacity-100" : "w-0 opacity-0 group-hover:w-3 group-hover:opacity-40"
+                          }`}
+                          style={{ backgroundColor: project.theme.accent }}
+                        />
+                      </div>
                     </button>
                   );
                 })}
@@ -617,33 +697,340 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
             </div>
           </div>
 
-          {/* Minimal Store Footer — Aligned to Same Margins (px-6 sm:px-14) */}
-          <div
-            className={`${viewport === "mobile" ? "px-5 py-6" : "px-6 sm:px-14 py-8"
-              } border-t text-xs flex flex-col sm:flex-row items-center justify-between gap-4`}
+          {/* Realistic Boutique E-commerce Footer */}
+          <footer
+            className="border-t mt-4"
             style={{
               borderColor: project.theme.border,
               backgroundColor: project.theme.bgPrimary,
-              color: project.theme.textMuted,
+              color: project.theme.textPrimary,
             }}
           >
-            <div>
-              <span
-                className="font-serif text-sm tracking-[0.22em] font-normal mr-3"
-                style={{ color: project.theme.textPrimary }}
+            {/* 1. Boutique Trust & Service Strip */}
+            <div
+              className="border-b"
+              style={{
+                borderColor: project.theme.border,
+                backgroundColor: project.theme.bgSecondary,
+              }}
+            >
+              <div
+                className={`grid ${
+                  viewport === "mobile"
+                    ? "grid-cols-1 divide-y"
+                    : "grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x"
+                }`}
+                style={{ borderColor: project.theme.border }}
               >
-                {project.name}
-              </span>
-              <span className="font-light">
-                Projeto Conceitual Demonstrativo — Lemury
-              </span>
+                {(isJewelry
+                  ? [
+                      {
+                        icon: Truck,
+                        title: "Envio com Seguro & Estojo",
+                        desc: "Acompanha estojo de veludo e embalagem presenteável",
+                      },
+                      {
+                        icon: ShieldCheck,
+                        title: "Garantia & Autenticidade",
+                        desc: "Banho Ouro 18k hipoalergênico com 1 ano de garantia",
+                      },
+                      {
+                        icon: Heart,
+                        title: "Condições Exclusivas",
+                        desc: "Até 6x sem juros no cartão ou 5% de desconto no PIX",
+                      },
+                    ]
+                  : [
+                      {
+                        icon: Truck,
+                        title: "Envio para todo o Brasil",
+                        desc: "Frete cortesia acima de R$ 450 e embalagem perfumada",
+                      },
+                      {
+                        icon: ShieldCheck,
+                        title: "Primeira Troca Cortesia",
+                        desc: "Até 30 dias após o recebimento com logística reversa",
+                      },
+                      {
+                        icon: Heart,
+                        title: "Pagamento Facilitado",
+                        desc: "Até 6x sem juros no cartão ou 5% de desconto no PIX",
+                      },
+                    ]
+                ).map((item) => {
+                  const IconComp = item.icon;
+                  return (
+                    <div
+                      key={item.title}
+                      className={`${
+                        viewport === "mobile" ? "px-5 py-3.5" : "px-6 sm:px-8 py-5"
+                      } flex items-start gap-3.5`}
+                      style={{ borderColor: project.theme.border }}
+                    >
+                      <span
+                        className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 border mt-0.5"
+                        style={{
+                          borderColor: project.theme.border,
+                          backgroundColor: project.theme.bgPrimary,
+                          color: project.theme.accent,
+                        }}
+                      >
+                        <IconComp className="w-3.5 h-3.5 stroke-[1.5]" />
+                      </span>
+                      <div className="space-y-0.5">
+                        <p className="font-serif text-sm sm:text-[15px] font-medium leading-snug">
+                          {item.title}
+                        </p>
+                        <p
+                          className="text-[11px] sm:text-xs font-light leading-relaxed"
+                          style={{ color: project.theme.textMuted }}
+                        >
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-            <div className="flex items-center gap-4 font-light">
-              <span>PIX • Cartão em até 6x</span>
-              <span>•</span>
-              <span>Envio para todo o Brasil</span>
+
+            {/* 2. Main Boutique Footer Columns */}
+            <div
+              className={`${
+                viewport === "mobile"
+                  ? "px-5 py-8 space-y-8"
+                  : "px-6 sm:px-14 py-12 grid grid-cols-1 md:grid-cols-12 gap-10"
+              }`}
+            >
+              {/* Brand Manifesto & Showroom */}
+              <div
+                className={`${
+                  viewport === "mobile" ? "" : "md:col-span-4"
+                } space-y-3.5`}
+              >
+                <p className="font-serif text-lg sm:text-xl tracking-[0.26em] font-normal">
+                  {project.name}
+                </p>
+                <p
+                  className="text-xs leading-relaxed font-light max-w-xs"
+                  style={{ color: project.theme.textMuted }}
+                >
+                  {isJewelry
+                    ? "Joalheria contemporânea com design autoral, pérolas naturais de água doce e acabamento artesanal em Ouro 18k."
+                    : "Alfaiataria feminina e peças atemporais em fibras naturais, desenhadas para acompanhar o ritmo da mulher contemporânea."}
+                </p>
+                <div
+                  className="pt-1 text-[11px] font-light space-y-1"
+                  style={{ color: project.theme.textMuted }}
+                >
+                  <p>
+                    <strong
+                      className="font-normal"
+                      style={{ color: project.theme.textPrimary }}
+                    >
+                      Atendimento:
+                    </strong>{" "}
+                    Seg a Sex, das 9h às 18h
+                  </p>
+                  <p>
+                    {isJewelry
+                      ? "concierge@maisonaurea.com.br"
+                      : "atendimento@ateliernoir.com.br"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Navigation Columns (2-col grid on mobile, 5 cols on desktop) */}
+              <div
+                className={`${
+                  viewport === "mobile"
+                    ? "grid grid-cols-2 gap-6 pt-6 border-t"
+                    : "md:col-span-4 grid grid-cols-2 gap-6"
+                }`}
+                style={{ borderColor: project.theme.border }}
+              >
+                {/* Categories Column */}
+                <div className="space-y-3">
+                  <p className="text-[10px] uppercase tracking-[0.22em] font-medium">
+                    Coleções
+                  </p>
+                  <ul className="space-y-2 text-xs font-light">
+                    {project.categories.map((cat) => (
+                      <li key={cat}>
+                        <a
+                          href="#vitrine-produtos"
+                          onClick={() => setActiveCategory(cat)}
+                          className="hover:underline underline-offset-4 transition-opacity opacity-80 hover:opacity-100"
+                        >
+                          {cat}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Customer Care Column */}
+                <div className="space-y-3">
+                  <p className="text-[10px] uppercase tracking-[0.22em] font-medium">
+                    Cliente
+                  </p>
+                  <ul
+                    className="space-y-2 text-xs font-light"
+                    style={{ color: project.theme.textMuted }}
+                  >
+                    {(isJewelry
+                      ? [
+                          "Guia de Aros & Medidas",
+                          "Garantia e Cuidados",
+                          "Embalagem para Presente",
+                          "Trocas e Devoluções",
+                          "Rastrear Pedido",
+                        ]
+                      : [
+                          "Guia de Medidas",
+                          "Cuidados com o Linho",
+                          "Trocas e Devoluções",
+                          "Prazo e Entrega",
+                          "Rastrear Pedido",
+                        ]
+                    ).map((item) => (
+                      <li key={item}>
+                        <button
+                          type="button"
+                          onClick={() => setCartOpen(true)}
+                          className="text-left hover:underline underline-offset-4 transition-opacity hover:opacity-100"
+                        >
+                          {item}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Newsletter / VIP Club Column */}
+              <div
+                className={`${
+                  viewport === "mobile"
+                    ? "pt-6 border-t"
+                    : "md:col-span-4"
+                } space-y-3`}
+                style={{ borderColor: project.theme.border }}
+              >
+                <p className="text-[10px] uppercase tracking-[0.22em] font-medium">
+                  {isJewelry ? "Clube Maison Aurea" : "Newsletter Atelier"}
+                </p>
+                <p
+                  className="text-xs font-light leading-relaxed"
+                  style={{ color: project.theme.textMuted }}
+                >
+                  {isJewelry
+                    ? "Cadastre-se para receber lançamentos exclusivos e ganhe 10% de cortesia na primeira joia."
+                    : "Inscreva-se para conhecer novas coleções em primeira mão com 10% de cortesia na primeira compra."}
+                </p>
+
+                {!newsletterSubmitted ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (newsletterEmail.trim()) {
+                        setNewsletterSubmitted(true);
+                      }
+                    }}
+                    className="pt-1 flex items-center gap-1.5"
+                  >
+                    <input
+                      type="email"
+                      required
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      placeholder="Seu melhor e-mail"
+                      className="flex-1 min-w-0 px-3 py-2.5 rounded-[4px] text-xs font-light border bg-white/80 focus:outline-none"
+                      style={{
+                        borderColor: project.theme.border,
+                        color: project.theme.textPrimary,
+                      }}
+                    />
+                    <button
+                      type="submit"
+                      className="px-4 py-2.5 rounded-[4px] text-[11px] uppercase tracking-[0.14em] font-normal shrink-0 transition-opacity hover:opacity-90"
+                      style={{
+                        backgroundColor: project.theme.accent,
+                        color: project.theme.bgPrimary,
+                      }}
+                    >
+                      Assinar
+                    </button>
+                  </form>
+                ) : (
+                  <div
+                    className="p-3 rounded-[4px] border text-xs flex items-center gap-2"
+                    style={{
+                      borderColor: project.theme.border,
+                      backgroundColor: project.theme.bgSecondary,
+                    }}
+                  >
+                    <Check
+                      className="w-3.5 h-3.5 shrink-0"
+                      style={{ color: project.theme.accent }}
+                    />
+                    <span className="font-light">
+                      Inscrição confirmada! Cupom:{" "}
+                      <strong className="font-medium">BEMVINDA10</strong>
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+
+            {/* 3. Bottom Payment Badges, Security & Copyright Bar */}
+            <div
+              className={`${
+                viewport === "mobile"
+                  ? "px-5 py-5 flex-col items-start"
+                  : "px-6 sm:px-14 py-6 flex-col sm:flex-row items-center"
+              } border-t flex justify-between gap-4 text-[11px] font-light`}
+              style={{
+                borderColor: project.theme.border,
+                backgroundColor: project.theme.bgSecondary,
+                color: project.theme.textMuted,
+              }}
+            >
+              <div className="space-y-0.5">
+                <p>
+                  © {new Date().getFullYear()} {project.name}. Todos os direitos
+                  reservados.
+                </p>
+                <p className="text-[10px] opacity-75">
+                  E-commerce demonstrativo implantado por{" "}
+                  <strong
+                    className="font-normal"
+                    style={{ color: project.theme.textPrimary }}
+                  >
+                    Lemury
+                  </strong>
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-1.5">
+                {["PIX", "Visa", "Mastercard", "Amex", "Elo", "6x Sem Juros"].map(
+                  (badge) => (
+                    <span
+                      key={badge}
+                      className="px-2 py-0.5 rounded-[3px] border text-[10px] tracking-[0.06em] uppercase"
+                      style={{
+                        borderColor: project.theme.border,
+                        backgroundColor: project.theme.bgPrimary,
+                        color: project.theme.textPrimary,
+                      }}
+                    >
+                      {badge}
+                    </span>
+                  )
+                )}
+              </div>
+            </div>
+          </footer>
         </div>
       </div>
 

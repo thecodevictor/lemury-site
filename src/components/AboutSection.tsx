@@ -3,26 +3,26 @@ import React from "react";
 const PILLARS = [
   {
     number: "01",
-    tag: "Operação",
-    title: "Estrutura completa",
+    tag: "Especialização",
+    title: "Foco em e-commerce",
     description:
-      "Catálogo, carrinho, checkout, pagamentos e fretes configurados.",
+      "Projetos desenvolvidos exclusivamente para operações de varejo que buscam profissionalizar suas vendas online.",
     desktopOffset: "md:pt-0",
   },
   {
     number: "02",
-    tag: "Direção Visual",
-    title: "Identidade preservada",
+    tag: "Titularidade e Autonomia",
+    title: "A loja é 100% sua",
     description:
-      "Direção visual refinada e alinhada à personalidade de cada marca.",
+      "Contas configuradas em nome da sua empresa, com treinamento prático para gerenciar produtos, estoque e pedidos com facilidade.",
     desktopOffset: "md:pt-8",
   },
   {
     number: "03",
-    tag: "Autonomia",
-    title: "Gestão descomplicada",
+    tag: "Direção Visual",
+    title: "Identidade preservada",
     description:
-      "Entrega acompanhada de orientação prática para administrar a loja.",
+      "Interfaces organizadas, intuitivas e alinhadas à identidade visual da sua marca, pensadas para facilitar a jornada de compra.",
     desktopOffset: "md:pt-3",
   },
 ];
@@ -41,22 +41,27 @@ export function AboutSection() {
               Sobre a Lemury
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-[2.75rem] font-medium text-lemury-green leading-[1.12]">
-              Design, tecnologia e organização aplicados ao comércio.
+              Seu negócio já existe.{" "}
+              <span className="italic font-normal text-lemury-green-alt">
+                Nós estruturamos sua operação no digital.
+              </span>
             </h2>
           </div>
 
           <div className="lg:col-span-7 space-y-5 text-base sm:text-lg text-lemury-stone leading-relaxed">
             <p className="text-lemury-black/85">
-              A Lemury é uma empresa especializada na criação de e-commerces
-              para negócios que desejam estruturar sua presença digital. Unimos
-              design, tecnologia e organização para transformar operações
-              comerciais em experiências de compra online profissionais.
+              A Lemury é uma empresa especializada na criação e implantação de
+              lojas virtuais profissionais para marcas que comercializam
+              produtos físicos. Não atuamos como uma agência genérica: nosso
+              foco é exclusivamente construir o canal de vendas online que a sua
+              operação precisa para crescer com organização.
             </p>
             <p>
-              Cuidamos da implantação técnica e visual — do planejamento de
-              categorias e páginas de produto à configuração de carrinho, meios
-              de pagamento e opções de entrega — para que sua empresa receba uma
-              loja preparada para comercializar seus produtos pela internet.
+              Cuidamos de toda a implantação técnica e visual — do planejamento
+              do catálogo às integrações de pagamento e frete — e entregamos a
+              loja pronta, registrada em sua titularidade, para que você tenha
+              total autonomia na gestão diária sem depender permanentemente de
+              suporte técnico.
             </p>
           </div>
         </div>

@@ -197,39 +197,52 @@ export function PortfolioSection() {
                         </div>
                       </div>
 
-                      {/* Categories Bar Preview (Aligned to px-5 margins) */}
+                      {/* Categories Bar Preview — Circular Thumbnails Side-by-Side */}
                       <div
                         className="px-5 pt-2.5 pb-2 border-b space-y-1.5"
                         style={{ borderColor: project.theme.border }}
                       >
                         <div className="flex items-center justify-between">
                           <span className="text-[6.5px] uppercase tracking-[0.18em] opacity-65">
-                            Curadoria por categoria
+                            Categorias
                           </span>
                           <span className="font-serif italic text-[7px] opacity-60">
                             0{project.products.length} peças
                           </span>
                         </div>
-                        <div className="grid grid-cols-5 gap-1">
-                          {project.categories.map((cat, idx) => (
-                            <span
-                              key={cat}
-                              className="px-1.5 py-0.5 rounded-[2px] font-serif text-[7px] tracking-[0.02em] truncate text-center"
-                              style={
-                                idx === 0
-                                  ? {
-                                      backgroundColor: project.theme.accent,
-                                      color: project.theme.bgPrimary,
-                                    }
-                                  : {
-                                      backgroundColor: project.theme.bgSecondary,
-                                      color: project.theme.textPrimary,
-                                    }
-                              }
-                            >
-                              {cat}
-                            </span>
-                          ))}
+                        <div className="flex items-center justify-between gap-2">
+                          {project.categories.map((cat, idx) => {
+                            const catProduct =
+                              idx === 0
+                                ? project.products[5] || project.products[0]
+                                : project.products.find((p) => p.category === cat) ||
+                                  project.products[0];
+                            return (
+                              <div
+                                key={cat}
+                                className="flex flex-col items-center gap-0.5 min-w-0"
+                              >
+                                <div
+                                  className="w-6 h-6 rounded-full p-[1px] overflow-hidden"
+                                  style={{
+                                    border:
+                                      idx === 0
+                                        ? `1.5px solid ${project.theme.accent}`
+                                        : `1px solid ${project.theme.border}`,
+                                  }}
+                                >
+                                  <img
+                                    src={catProduct.image}
+                                    alt={cat}
+                                    className="w-full h-full rounded-full object-cover"
+                                  />
+                                </div>
+                                <span className="font-serif text-[6.5px] tracking-[0.02em] truncate">
+                                  {cat}
+                                </span>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
 

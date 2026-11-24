@@ -92,3 +92,12 @@ body {
   animation: heroOrbitSlow 32s linear infinite;
 }
 
+/* Hide scrollbar for horizontal category carousels while keeping touch/drag scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
