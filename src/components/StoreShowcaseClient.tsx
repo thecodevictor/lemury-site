@@ -52,6 +52,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
   const [checkoutDone, setCheckoutDone] = useState(false);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
     const syncViewportWithScreen = () => {
       if (window.innerWidth < 768) {
         setViewport("mobile");
@@ -118,7 +119,15 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-4">
             <Link
-              href="/#portfolio"
+              href="/"
+              scroll={false}
+              onClick={() => {
+                try {
+                  sessionStorage.setItem("lemury_portfolio_last_slug", project.slug);
+                } catch {
+                  // Ignore storage access errors
+                }
+              }}
               className="inline-flex items-center gap-2 text-xs sm:text-sm font-medium text-lemury-cream/85 hover:text-lemury-cream transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />

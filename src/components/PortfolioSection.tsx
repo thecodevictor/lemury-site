@@ -1,9 +1,59 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { CONCEPTUAL_PROJECTS } from "@/data/lemuryData";
 import { ArrowUpRight, Search, Heart, ShoppingBag, User, ArrowRight } from "lucide-react";
 
 export function PortfolioSection() {
+  useEffect(() => {
+    try {
+      const savedY = sessionStorage.getItem("lemury_portfolio_scroll_y");
+      const lastSlug = sessionStorage.getItem("lemury_portfolio_last_slug");
+
+      if (savedY !== null || lastSlug) {
+        const htmlEl = document.documentElement;
+        const prevBehavior = htmlEl.style.scrollBehavior;
+        htmlEl.style.scrollBehavior = "auto";
+
+        const restorePosition = () => {
+          if (savedY !== null) {
+            window.scrollTo({ top: Number(savedY), behavior: "instant" as ScrollBehavior });
+          } else if (lastSlug) {
+            const cardEl = document.getElementById(`projeto-${lastSlug}`);
+            if (cardEl) {
+              const rect = cardEl.getBoundingClientRect();
+              const targetY = window.scrollY + rect.top - 96;
+              window.scrollTo({ top: Math.max(0, targetY), behavior: "instant" as ScrollBehavior });
+            }
+          }
+        };
+
+        restorePosition();
+        requestAnimationFrame(() => {
+          restorePosition();
+          setTimeout(() => {
+            htmlEl.style.scrollBehavior = prevBehavior;
+          }, 50);
+        });
+
+        sessionStorage.removeItem("lemury_portfolio_scroll_y");
+        sessionStorage.removeItem("lemury_portfolio_last_slug");
+      }
+    } catch {
+      // Ignore storage access errors
+    }
+  }, []);
+
+  const handleSaveScroll = (slug: string) => {
+    try {
+      sessionStorage.setItem("lemury_portfolio_scroll_y", String(window.scrollY));
+      sessionStorage.setItem("lemury_portfolio_last_slug", slug);
+    } catch {
+      // Ignore storage access errors
+    }
+  };
+
   return (
     <section
       id="portfolio"
@@ -32,11 +82,13 @@ export function PortfolioSection() {
             return (
               <article
                 key={project.slug}
-                className="group rounded-2xl border border-lemury-green/15 bg-lemury-white shadow-subtle hover:shadow-editorial hover:border-lemury-green/30 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                id={`projeto-${project.slug}`}
+                className="scroll-mt-24 group rounded-2xl border border-lemury-green/15 bg-lemury-white shadow-subtle hover:shadow-editorial hover:border-lemury-green/30 transition-all duration-300 overflow-hidden flex flex-col justify-between"
               >
                 {/* Top Preview Stage (Connected to Card) */}
                 <Link
                   href={`/portfolio/${project.slug}`}
+                  onClick={() => handleSaveScroll(project.slug)}
                   aria-label={`Visualizar demonstração do projeto ${project.name}`}
                   className="block relative p-5 sm:p-6 pb-8 border-b border-lemury-green/10 overflow-hidden"
                   style={{ backgroundColor: "#ECE9E2" }}
@@ -356,6 +408,7 @@ export function PortfolioSection() {
                     </span>
                     <Link
                       href={`/portfolio/${project.slug}`}
+                      onClick={() => handleSaveScroll(project.slug)}
                       className="inline-flex items-center justify-center gap-2 bg-lemury-green hover:bg-lemury-green-alt text-lemury-cream text-xs sm:text-sm font-medium px-5 py-2.5 rounded-[10px] transition-colors duration-200 shrink-0"
                     >
                       <span>Visualizar projeto</span>
