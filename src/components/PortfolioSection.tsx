@@ -78,35 +78,28 @@ export function PortfolioSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {CONCEPTUAL_PROJECTS.map((project) => {
             const isJewelry = project.slug === "maison-aurea";
+            const themeClass = isJewelry
+              ? "store-theme-maison-aurea"
+              : "store-theme-atelier-noir";
 
             return (
               <article
                 key={project.slug}
                 id={`projeto-${project.slug}`}
-                className="scroll-mt-24 group rounded-2xl border border-lemury-green/15 bg-lemury-white shadow-subtle hover:shadow-editorial hover:border-lemury-green/30 transition-all duration-300 overflow-hidden flex flex-col justify-between"
+                className={`${themeClass} scroll-mt-24 group rounded-2xl border border-lemury-green/15 bg-lemury-white shadow-subtle hover:shadow-editorial hover:border-lemury-green/30 transition-all duration-300 overflow-hidden flex flex-col justify-between`}
               >
                 {/* Top Preview Stage (Connected to Card) */}
                 <Link
                   href={`/portfolio/${project.slug}`}
                   onClick={() => handleSaveScroll(project.slug)}
                   aria-label={`Visualizar demonstração do projeto ${project.name}`}
-                  className="block relative p-5 sm:p-6 pb-8 border-b border-lemury-green/10 overflow-hidden"
-                  style={{ backgroundColor: "#ECE9E2" }}
+                  className="block relative p-5 sm:p-6 pb-8 border-b border-lemury-green/10 overflow-hidden bg-[#ECE9E2]"
                 >
                   <div className="relative pr-0 sm:pr-12">
                     {/* Desktop Monitor Frame */}
-                    <div
-                      className="rounded-[10px] overflow-hidden border-[4px] border-[#18181A] shadow-editorial transition-transform duration-500 group-hover:translate-y-[-2px]"
-                      style={{
-                        backgroundColor: project.theme.bgPrimary,
-                        color: project.theme.textPrimary,
-                      }}
-                    >
+                    <div className="rounded-[10px] overflow-hidden border-[4px] border-[#18181A] shadow-editorial transition-transform duration-500 group-hover:translate-y-[-2px] bg-[var(--store-bg-primary)] text-[var(--store-text-primary)]">
                       {/* Store Header (Aligned Margins px-5) */}
-                      <div
-                        className="px-5 py-2.5 flex items-center justify-between"
-                        style={{ backgroundColor: project.theme.bgPrimary }}
-                      >
+                      <div className="px-5 py-2.5 flex items-center justify-between bg-[var(--store-bg-primary)]">
                         <span className="font-serif text-[11px] sm:text-xs tracking-[0.24em] font-normal">
                           {project.name}
                         </span>
@@ -156,13 +149,7 @@ export function PortfolioSection() {
                                 todas as suas versões.
                               </p>
                               <div className="pt-1">
-                                <span
-                                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] text-[7.5px] font-normal tracking-[0.03em]"
-                                  style={{
-                                    backgroundColor: project.theme.accent,
-                                    color: "#FAF7F2",
-                                  }}
-                                >
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] text-[7.5px] font-normal tracking-[0.03em] bg-[var(--store-accent)] text-[#FAF7F2]">
                                   <span>Descubra a coleção</span>
                                   <ArrowRight className="w-2 h-2 stroke-[1.5]" />
                                 </span>
@@ -181,13 +168,7 @@ export function PortfolioSection() {
                                 MULHERES REAIS
                               </p>
                               <div className="pt-1">
-                                <span
-                                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] text-[7.5px] font-normal tracking-[0.03em]"
-                                  style={{
-                                    backgroundColor: project.theme.accent,
-                                    color: "#FAF8F5",
-                                  }}
-                                >
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-[2px] text-[7.5px] font-normal tracking-[0.03em] bg-[var(--store-accent)] text-[#FAF8F5]">
                                   <span>Explore a coleção</span>
                                   <ArrowRight className="w-2 h-2 stroke-[1.5]" />
                                 </span>
@@ -198,10 +179,7 @@ export function PortfolioSection() {
                       </div>
 
                       {/* Categories Bar Preview — Circular Thumbnails Side-by-Side */}
-                      <div
-                        className="px-5 pt-2.5 pb-2 border-b space-y-1.5"
-                        style={{ borderColor: project.theme.border }}
-                      >
+                      <div className="px-5 pt-2.5 pb-2 border-b border-[var(--store-border)] space-y-1.5">
                         <div className="flex items-center justify-between">
                           <span className="text-[6.5px] uppercase tracking-[0.18em] opacity-65">
                             Categorias
@@ -223,13 +201,11 @@ export function PortfolioSection() {
                                 className="flex flex-col items-center gap-0.5 min-w-0"
                               >
                                 <div
-                                  className="w-6 h-6 rounded-full p-[1px] overflow-hidden"
-                                  style={{
-                                    border:
-                                      idx === 0
-                                        ? `1.5px solid ${project.theme.accent}`
-                                        : `1px solid ${project.theme.border}`,
-                                  }}
+                                  className={`w-6 h-6 rounded-full p-[1px] overflow-hidden ${
+                                    idx === 0
+                                      ? "border-[1.5px] border-[var(--store-accent)]"
+                                      : "border border-[var(--store-border)]"
+                                  }`}
                                 >
                                   <img
                                     src={catProduct.image}
@@ -305,13 +281,7 @@ export function PortfolioSection() {
                     </div>
 
                     {/* Companion Smartphone Frame (Bottom Right, Matching Reference Photos) */}
-                    <div
-                      className="hidden sm:block w-[124px] rounded-[16px] overflow-hidden border-[3px] border-[#18181A] shadow-2xl absolute -bottom-3 right-0 transition-transform duration-500 group-hover:translate-y-[-4px]"
-                      style={{
-                        backgroundColor: project.theme.bgPrimary,
-                        color: project.theme.textPrimary,
-                      }}
-                    >
+                    <div className="hidden sm:block w-[124px] rounded-[16px] overflow-hidden border-[3px] border-[#18181A] shadow-2xl absolute -bottom-3 right-0 transition-transform duration-500 group-hover:translate-y-[-4px] bg-[var(--store-bg-primary)] text-[var(--store-text-primary)]">
                       {/* Phone Top Bar */}
                       <div className="pt-1.5 pb-1 px-2.5 flex flex-col items-center">
                         <span className="w-6 h-1 rounded-full bg-black mb-1" />
@@ -330,12 +300,11 @@ export function PortfolioSection() {
                           className="w-full h-full object-cover object-right"
                         />
                         <div
-                          className="absolute inset-0 p-2 flex flex-col justify-end"
-                          style={{
-                            background: isJewelry
-                              ? "linear-gradient(180deg, transparent 15%, rgba(250,247,242,0.95) 85%)"
-                              : "linear-gradient(180deg, transparent 20%, rgba(28,26,23,0.55) 100%)",
-                          }}
+                          className={`absolute inset-0 p-2 flex flex-col justify-end ${
+                            isJewelry
+                              ? "bg-[linear-gradient(180deg,transparent_15%,rgba(250,247,242,0.95)_85%)]"
+                              : "bg-[linear-gradient(180deg,transparent_20%,rgba(28,26,23,0.55)_100%)]"
+                          }`}
                         >
                           <p
                             className={`font-serif text-[9px] leading-[1.05] font-normal ${
@@ -346,13 +315,7 @@ export function PortfolioSection() {
                               ? "O brilho dos seus momentos"
                               : "Essência contemporânea"}
                           </p>
-                          <span
-                            className="mt-1 inline-block w-fit px-1.5 py-0.5 rounded-[2px] text-[5.5px]"
-                            style={{
-                              backgroundColor: project.theme.accent,
-                              color: "#FAF8F5",
-                            }}
-                          >
+                          <span className="mt-1 inline-block w-fit px-1.5 py-0.5 rounded-[2px] text-[5.5px] bg-[var(--store-accent)] text-[#FAF8F5]">
                             {isJewelry
                               ? "Descubra a coleção →"
                               : "Explore a coleção →"}

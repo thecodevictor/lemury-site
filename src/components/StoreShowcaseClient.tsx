@@ -33,7 +33,11 @@ interface CartItem {
 
 export function StoreShowcaseClient({ project }: { project: ConceptualProject }) {
   const isJewelry = project.slug === "maison-aurea";
+  const themeClass = isJewelry
+    ? "store-theme-maison-aurea"
+    : "store-theme-atelier-noir";
   const defaultCategory = project.categories[0] || "Todos";
+
   const [viewport, setViewport] = useState<"desktop" | "mobile">("desktop");
   const [activeCategory, setActiveCategory] = useState<string>(defaultCategory);
   const [selectedProduct, setSelectedProduct] = useState<ConceptualProduct | null>(null);
@@ -144,7 +148,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="min-h-screen bg-[#151716] flex flex-col">
+    <div className={`${themeClass} min-h-screen bg-[#151716] flex flex-col`}>
       {/* Lemury Studio Demonstration Control Bar */}
       <header className="sticky top-0 z-50 bg-lemury-green text-lemury-cream border-b border-lemury-cream/15 px-4 sm:px-8 py-3">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
@@ -172,10 +176,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
               <button
                 type="button"
                 onClick={() => setViewport("desktop")}
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-colors ${viewport === "desktop"
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+                  viewport === "desktop"
                     ? "bg-lemury-cream text-lemury-green"
                     : "text-lemury-cream/75 hover:text-lemury-cream"
-                  }`}
+                }`}
               >
                 <Monitor className="w-3.5 h-3.5" />
                 <span>Desktop</span>
@@ -183,10 +188,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
               <button
                 type="button"
                 onClick={() => setViewport("mobile")}
-                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-colors ${viewport === "mobile"
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-colors ${
+                  viewport === "mobile"
                     ? "bg-lemury-cream text-lemury-green"
                     : "text-lemury-cream/75 hover:text-lemury-cream"
-                  }`}
+                }`}
               >
                 <Smartphone className="w-3.5 h-3.5" />
                 <span>Mobile</span>
@@ -209,22 +215,17 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
       {/* Storefront Viewport Wrapper */}
       <div className="flex-1 flex justify-center py-0 md:py-8 px-0 md:px-6 overflow-x-hidden">
         <div
-          className={`w-full transition-all duration-300 shadow-2xl overflow-hidden ${viewport === "mobile"
+          className={`w-full transition-all duration-300 shadow-2xl overflow-hidden bg-[var(--store-bg-primary)] text-[var(--store-text-primary)] ${
+            viewport === "mobile"
               ? "md:max-w-[390px] md:rounded-[34px] md:border-[8px] md:border-[#1E1E20] md:my-4"
               : "max-w-[1120px] md:rounded-xl border border-white/10"
-            }`}
-          style={{
-            backgroundColor: project.theme.bgPrimary,
-            color: project.theme.textPrimary,
-          }}
+          }`}
         >
           {/* Store Top Navigation Bar — Exact Margin Alignment (px-6 sm:px-14) */}
           <div
-            className={`${viewport === "mobile" ? "px-5 py-4" : "px-6 sm:px-14 py-6"
-              } flex items-center justify-between sticky top-0 z-30 backdrop-blur-md`}
-            style={{
-              backgroundColor: `${project.theme.bgPrimary}F7`,
-            }}
+            className={`${
+              viewport === "mobile" ? "px-5 py-4" : "px-6 sm:px-14 py-6"
+            } flex items-center justify-between sticky top-0 z-30 backdrop-blur-md bg-[var(--store-bg-primary-alpha)]`}
           >
             <button
               type="button"
@@ -243,10 +244,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                     onClick={() =>
                       setActiveCategory(activeCategory === cat ? defaultCategory : cat)
                     }
-                    className={`text-[13px] font-light tracking-[0.03em] py-0.5 border-b transition-all ${activeCategory === cat
+                    className={`text-[13px] font-light tracking-[0.03em] py-0.5 border-b transition-all ${
+                      activeCategory === cat
                         ? "border-current font-normal"
                         : "border-transparent text-neutral-600 hover:text-neutral-900"
-                      }`}
+                    }`}
                   >
                     {cat}
                   </button>
@@ -293,44 +295,47 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
             </div>
           </div>
 
-          {/* Full-Width Studio Hero Banner — Matching Exact Structure of Reference Photos */}
+          {/* Full-Width Studio Hero Banner */}
           <div className="relative w-full overflow-hidden">
             <div
-              className={`relative w-full ${viewport === "mobile"
+              className={`relative w-full ${
+                viewport === "mobile"
                   ? "h-[350px]"
                   : "aspect-[1500/540] min-h-[340px]"
-                }`}
+              }`}
             >
               <img
                 src={project.heroImage}
                 alt={`Banner principal ${project.name}`}
-                className={`w-full h-full object-cover ${viewport === "mobile" ? "object-right" : "object-center"
-                  }`}
+                className={`w-full h-full object-cover ${
+                  viewport === "mobile" ? "object-right" : "object-center"
+                }`}
               />
 
               {/* Mobile Subtle Gradient for Text Readability */}
               {viewport === "mobile" && (
                 <div
-                  className="absolute inset-0"
-                  style={{
-                    background: isJewelry
-                      ? "linear-gradient(180deg, rgba(250,247,242,0.10) 0%, rgba(250,247,242,0.96) 72%)"
-                      : "linear-gradient(180deg, rgba(28,26,23,0.10) 0%, rgba(28,26,23,0.65) 100%)",
-                  }}
+                  className={`absolute inset-0 ${
+                    isJewelry
+                      ? "bg-[linear-gradient(180deg,rgba(250,247,242,0.10)_0%,rgba(250,247,242,0.96)_72%)]"
+                      : "bg-[linear-gradient(180deg,rgba(28,26,23,0.10)_0%,rgba(28,26,23,0.65)_100%)]"
+                  }`}
                 />
               )}
 
-              {/* Light & Minimalist Storefront Typography — Aligned to Exact Same Left Margin (px-6 sm:px-14) */}
+              {/* Light & Minimalist Storefront Typography */}
               <div
-                className={`absolute inset-0 ${viewport === "mobile"
+                className={`absolute inset-0 ${
+                  viewport === "mobile"
                     ? "px-5 pb-6 flex flex-col justify-end"
                     : "px-6 sm:px-14 flex flex-col justify-center"
-                  }`}
+                }`}
               >
                 {isJewelry ? (
                   <div
-                    className={`${viewport === "mobile" ? "max-w-full" : "max-w-[460px]"
-                      } space-y-3 sm:space-y-4`}
+                    className={`${
+                      viewport === "mobile" ? "max-w-full" : "max-w-[460px]"
+                    } space-y-3 sm:space-y-4`}
                   >
                     <p className="text-[10px] sm:text-[11px] font-light uppercase tracking-[0.24em] text-[#7A6855] leading-[1.55]">
                       JOIAS PARA
@@ -339,10 +344,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                     </p>
 
                     <h1
-                      className={`font-serif ${viewport === "mobile"
+                      className={`font-serif ${
+                        viewport === "mobile"
                           ? "text-4xl"
                           : "text-5xl sm:text-[3.65rem]"
-                        } font-normal text-[#3D2B1F] leading-[1.02] tracking-[-0.01em]`}
+                      } font-normal text-[#3D2B1F] leading-[1.02] tracking-[-0.01em]`}
                     >
                       O brilho dos
                       <br />
@@ -357,11 +363,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                     <div className="pt-1.5">
                       <a
                         href="#vitrine-produtos"
-                        className="inline-flex items-center gap-3 px-6 py-3 rounded-[3px] text-xs sm:text-[13px] font-normal tracking-[0.03em] transition-opacity hover:opacity-90"
-                        style={{
-                          backgroundColor: project.theme.accent,
-                          color: "#FAF7F2",
-                        }}
+                        className="inline-flex items-center gap-3 px-6 py-3 rounded-[3px] text-xs sm:text-[13px] font-normal tracking-[0.03em] transition-opacity hover:opacity-90 bg-[var(--store-accent)] text-[#FAF7F2]"
                       >
                         <span>Descubra a coleção</span>
                         <ArrowRight className="w-3.5 h-3.5 stroke-[1.5]" />
@@ -370,14 +372,16 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                   </div>
                 ) : (
                   <div
-                    className={`${viewport === "mobile" ? "max-w-full" : "max-w-[440px]"
-                      } space-y-3 sm:space-y-4`}
+                    className={`${
+                      viewport === "mobile" ? "max-w-full" : "max-w-[440px]"
+                    } space-y-3 sm:space-y-4`}
                   >
                     <h1
-                      className={`font-serif ${viewport === "mobile"
+                      className={`font-serif ${
+                        viewport === "mobile"
                           ? "text-4xl text-white"
                           : "text-5xl sm:text-[3.65rem] text-[#1E1C1A]"
-                        } font-normal leading-[1.0] tracking-[-0.01em]`}
+                      } font-normal leading-[1.0] tracking-[-0.01em]`}
                     >
                       Essência
                       <br />
@@ -385,10 +389,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                     </h1>
 
                     <p
-                      className={`text-[10px] sm:text-[11px] font-light uppercase tracking-[0.24em] leading-[1.55] ${viewport === "mobile"
+                      className={`text-[10px] sm:text-[11px] font-light uppercase tracking-[0.24em] leading-[1.55] ${
+                        viewport === "mobile"
                           ? "text-white/85"
                           : "text-[#5A534A]"
-                        }`}
+                      }`}
                     >
                       MODA ATEMPORAL PARA
                       <br />
@@ -398,11 +403,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                     <div className="pt-1.5">
                       <a
                         href="#vitrine-produtos"
-                        className="inline-flex items-center gap-3 px-6 py-3 rounded-[3px] text-xs sm:text-[13px] font-normal tracking-[0.03em] transition-opacity hover:opacity-90"
-                        style={{
-                          backgroundColor: project.theme.accent,
-                          color: "#FAF8F5",
-                        }}
+                        className="inline-flex items-center gap-3 px-6 py-3 rounded-[3px] text-xs sm:text-[13px] font-normal tracking-[0.03em] transition-opacity hover:opacity-90 bg-[var(--store-accent)] text-[#FAF8F5]"
                       >
                         <span>Explore a coleção</span>
                         <ArrowRight className="w-3.5 h-3.5 stroke-[1.5]" />
@@ -416,22 +417,17 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
 
           {/* Categories Section — Horizontal Circular Medallions with Drag/Swipe */}
           <div
-            className={`${viewport === "mobile"
+            className={
+              viewport === "mobile"
                 ? "px-5 pt-6 pb-2"
                 : "px-6 sm:px-14 pt-9 pb-3"
-              }`}
+            }
           >
-            <div
-              className="pb-6 border-b space-y-4"
-              style={{ borderColor: project.theme.border }}
-            >
+            <div className="pb-6 border-b border-[var(--store-border)] space-y-4">
               {/* Refined Editorial Header */}
               <div className="flex items-center justify-between gap-2">
                 <div className="inline-flex items-center gap-2.5">
-                  <span
-                    className="w-1.5 h-1.5 rotate-45"
-                    style={{ backgroundColor: project.theme.accent }}
-                  />
+                  <span className="w-1.5 h-1.5 rotate-45 bg-[var(--store-accent)]" />
                   <span
                     className={
                       isJewelry
@@ -447,16 +443,12 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                   <button
                     type="button"
                     onClick={() => setActiveCategory(defaultCategory)}
-                    className="text-[11px] font-light underline underline-offset-4 transition-opacity hover:opacity-75"
-                    style={{ color: project.theme.textPrimary }}
+                    className="text-[11px] font-light underline underline-offset-4 transition-opacity hover:opacity-75 text-[var(--store-text-primary)]"
                   >
                     Ver todas ({project.products.length})
                   </button>
                 ) : (
-                  <span
-                    className="font-serif italic text-xs sm:text-[13px]"
-                    style={{ color: project.theme.textMuted }}
-                  >
+                  <span className="font-serif italic text-xs sm:text-[13px] text-[var(--store-text-muted)]">
                     Arraste ou selecione para filtrar →
                   </span>
                 )}
@@ -500,17 +492,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                     >
                       {/* Circular Product Photo Medallion */}
                       <div
-                        className={`relative rounded-full p-[3px] transition-all duration-300 ${
+                        className={`relative rounded-full p-[3px] transition-all duration-300 bg-[var(--store-bg-primary)] ${
                           isActive
-                            ? "scale-[1.04] shadow-md"
-                            : "opacity-85 group-hover:opacity-100 group-hover:scale-[1.02]"
+                            ? "border-2 border-[var(--store-accent)] scale-[1.04] shadow-md"
+                            : "border border-[var(--store-border)] opacity-85 group-hover:opacity-100 group-hover:scale-[1.02]"
                         }`}
-                        style={{
-                          border: isActive
-                            ? `2px solid ${project.theme.accent}`
-                            : `1px solid ${project.theme.border}`,
-                          backgroundColor: project.theme.bgPrimary,
-                        }}
                       >
                         <div
                           className={`${
@@ -536,20 +522,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
 
                         {/* Subtle Item Count Pill on Bottom Right of Circle */}
                         <span
-                          className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full text-[9px] font-medium flex items-center justify-center border shadow-sm transition-colors"
-                          style={
+                          className={`absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full text-[9px] font-medium flex items-center justify-center border shadow-sm transition-colors ${
                             isActive
-                              ? {
-                                  backgroundColor: project.theme.accent,
-                                  color: project.theme.bgPrimary,
-                                  borderColor: project.theme.bgPrimary,
-                                }
-                              : {
-                                  backgroundColor: project.theme.bgSecondary,
-                                  color: project.theme.textPrimary,
-                                  borderColor: project.theme.border,
-                                }
-                          }
+                              ? "bg-[var(--store-accent)] text-[var(--store-bg-primary)] border-[var(--store-bg-primary)]"
+                              : "bg-[var(--store-bg-secondary)] text-[var(--store-text-primary)] border-[var(--store-border)]"
+                          }`}
                         >
                           {count}
                         </span>
@@ -562,18 +539,20 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                             viewport === "mobile"
                               ? "text-xs"
                               : "text-xs sm:text-[14px]"
-                          } tracking-[0.02em] whitespace-nowrap transition-all ${
-                            isActive ? "font-medium" : "font-normal opacity-80 group-hover:opacity-100"
+                          } tracking-[0.02em] whitespace-nowrap transition-all text-[var(--store-text-primary)] ${
+                            isActive
+                              ? "font-medium"
+                              : "font-normal opacity-80 group-hover:opacity-100"
                           }`}
-                          style={{ color: project.theme.textPrimary }}
                         >
                           {cat}
                         </span>
                         <span
-                          className={`h-[1.5px] rounded-full transition-all duration-300 ${
-                            isActive ? "w-5 opacity-100" : "w-0 opacity-0 group-hover:w-3 group-hover:opacity-40"
+                          className={`h-[1.5px] rounded-full transition-all duration-300 bg-[var(--store-accent)] ${
+                            isActive
+                              ? "w-5 opacity-100"
+                              : "w-0 opacity-0 group-hover:w-3 group-hover:opacity-40"
                           }`}
-                          style={{ backgroundColor: project.theme.accent }}
                         />
                       </div>
                     </button>
@@ -586,8 +565,9 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
           {/* Featured Products Section — Strictly Aligned Margins (px-6 sm:px-14) */}
           <div
             id="vitrine-produtos"
-            className={`${viewport === "mobile" ? "px-5 py-6" : "px-6 sm:px-14 py-8 sm:py-10"
-              } space-y-6`}
+            className={`${
+              viewport === "mobile" ? "px-5 py-6" : "px-6 sm:px-14 py-8 sm:py-10"
+            } space-y-6`}
           >
             {/* Section Title & "Ver todos ->" Bar */}
             <div className="flex items-center justify-between">
@@ -602,13 +582,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                   {isJewelry ? "NOSSAS FAVORITAS" : "Destaques da coleção"}
                 </h2>
                 {activeCategory !== defaultCategory && (
-                  <span
-                    className="text-[11px] px-2.5 py-0.5 rounded-[3px] font-light"
-                    style={{
-                      backgroundColor: project.theme.bgSecondary,
-                      color: project.theme.textPrimary,
-                    }}
-                  >
+                  <span className="text-[11px] px-2.5 py-0.5 rounded-[3px] font-light bg-[var(--store-bg-secondary)] text-[var(--store-text-primary)]">
                     {activeCategory}
                   </span>
                 )}
@@ -624,12 +598,13 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
               </button>
             </div>
 
-            {/* Clean 3-Column Product Cards Grid — Exact Proportions & Zero Margin Overflow */}
+            {/* Clean 3-Column Product Cards Grid */}
             <div
-              className={`grid ${viewport === "mobile"
+              className={`grid ${
+                viewport === "mobile"
                   ? "grid-cols-2 gap-3.5"
                   : "grid-cols-1 sm:grid-cols-3 gap-6"
-                }`}
+              }`}
             >
               {filteredProducts.map((product) => {
                 const isFav = !!favorites[product.id];
@@ -654,14 +629,15 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                           className="absolute top-3 right-3 p-1 text-[#4E3B2B] hover:scale-110 transition-transform"
                         >
                           <Heart
-                            className={`w-4 h-4 stroke-[1.4] ${isFav ? "fill-current" : ""
-                              }`}
+                            className={`w-4 h-4 stroke-[1.4] ${
+                              isFav ? "fill-current" : ""
+                            }`}
                           />
                         </button>
                       )}
                     </div>
 
-                    {/* Product Title, Price & Heart Row (Strictly Aligned Within Card Width) */}
+                    {/* Product Title, Price & Heart Row */}
                     <div className="flex items-start justify-between gap-2 pt-0.5">
                       <div className="min-w-0">
                         <h3 className="font-serif text-[15px] sm:text-[17px] font-normal text-[#1E1C1A] leading-snug truncate group-hover:underline">
@@ -670,9 +646,9 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                         <p className="text-xs sm:text-[13px] font-light text-neutral-700 mt-0.5">
                           {isJewelry
                             ? product.price.toLocaleString("pt-BR", {
-                              style: "currency",
-                              currency: "BRL",
-                            })
+                                style: "currency",
+                                currency: "BRL",
+                              })
                             : `R$ ${product.price}`}
                         </p>
                       </div>
@@ -685,8 +661,9 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                           className="p-0.5 text-neutral-700 hover:text-black transition-colors shrink-0 mt-0.5"
                         >
                           <Heart
-                            className={`w-4 h-4 stroke-[1.5] ${isFav ? "fill-current" : ""
-                              }`}
+                            className={`w-4 h-4 stroke-[1.5] ${
+                              isFav ? "fill-current" : ""
+                            }`}
                           />
                         </button>
                       )}
@@ -698,29 +675,15 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
           </div>
 
           {/* Realistic Boutique E-commerce Footer */}
-          <footer
-            className="border-t mt-4"
-            style={{
-              borderColor: project.theme.border,
-              backgroundColor: project.theme.bgPrimary,
-              color: project.theme.textPrimary,
-            }}
-          >
+          <footer className="border-t border-[var(--store-border)] bg-[var(--store-bg-primary)] text-[var(--store-text-primary)] mt-4">
             {/* 1. Boutique Trust & Service Strip */}
-            <div
-              className="border-b"
-              style={{
-                borderColor: project.theme.border,
-                backgroundColor: project.theme.bgSecondary,
-              }}
-            >
+            <div className="border-b border-[var(--store-border)] bg-[var(--store-bg-secondary)]">
               <div
-                className={`grid ${
+                className={`grid border-[var(--store-border)] ${
                   viewport === "mobile"
-                    ? "grid-cols-1 divide-y"
-                    : "grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x"
+                    ? "grid-cols-1 divide-y divide-[var(--store-border)]"
+                    : "grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[var(--store-border)]"
                 }`}
-                style={{ borderColor: project.theme.border }}
               >
                 {(isJewelry
                   ? [
@@ -765,26 +728,15 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                       className={`${
                         viewport === "mobile" ? "px-5 py-3.5" : "px-6 sm:px-8 py-5"
                       } flex items-start gap-3.5`}
-                      style={{ borderColor: project.theme.border }}
                     >
-                      <span
-                        className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 border mt-0.5"
-                        style={{
-                          borderColor: project.theme.border,
-                          backgroundColor: project.theme.bgPrimary,
-                          color: project.theme.accent,
-                        }}
-                      >
+                      <span className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 border border-[var(--store-border)] bg-[var(--store-bg-primary)] text-[var(--store-accent)] mt-0.5">
                         <IconComp className="w-3.5 h-3.5 stroke-[1.5]" />
                       </span>
                       <div className="space-y-0.5">
                         <p className="font-serif text-sm sm:text-[15px] font-medium leading-snug">
                           {item.title}
                         </p>
-                        <p
-                          className="text-[11px] sm:text-xs font-light leading-relaxed"
-                          style={{ color: project.theme.textMuted }}
-                        >
+                        <p className="text-[11px] sm:text-xs font-light leading-relaxed text-[var(--store-text-muted)]">
                           {item.desc}
                         </p>
                       </div>
@@ -796,11 +748,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
 
             {/* 2. Main Boutique Footer Columns */}
             <div
-              className={`${
+              className={
                 viewport === "mobile"
                   ? "px-5 py-8 space-y-8"
                   : "px-6 sm:px-14 py-12 grid grid-cols-1 md:grid-cols-12 gap-10"
-              }`}
+              }
             >
               {/* Brand Manifesto & Showroom */}
               <div
@@ -811,23 +763,14 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                 <p className="font-serif text-lg sm:text-xl tracking-[0.26em] font-normal">
                   {project.name}
                 </p>
-                <p
-                  className="text-xs leading-relaxed font-light max-w-xs"
-                  style={{ color: project.theme.textMuted }}
-                >
+                <p className="text-xs leading-relaxed font-light max-w-xs text-[var(--store-text-muted)]">
                   {isJewelry
                     ? "Joalheria contemporânea com design autoral, pérolas naturais de água doce e acabamento artesanal em Ouro 18k."
                     : "Alfaiataria feminina e peças atemporais em fibras naturais, desenhadas para acompanhar o ritmo da mulher contemporânea."}
                 </p>
-                <div
-                  className="pt-1 text-[11px] font-light space-y-1"
-                  style={{ color: project.theme.textMuted }}
-                >
+                <div className="pt-1 text-[11px] font-light space-y-1 text-[var(--store-text-muted)]">
                   <p>
-                    <strong
-                      className="font-normal"
-                      style={{ color: project.theme.textPrimary }}
-                    >
+                    <strong className="font-normal text-[var(--store-text-primary)]">
                       Atendimento:
                     </strong>{" "}
                     Seg a Sex, das 9h às 18h
@@ -840,14 +783,13 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                 </div>
               </div>
 
-              {/* Navigation Columns (2-col grid on mobile, 5 cols on desktop) */}
+              {/* Navigation Columns */}
               <div
-                className={`${
+                className={
                   viewport === "mobile"
-                    ? "grid grid-cols-2 gap-6 pt-6 border-t"
+                    ? "grid grid-cols-2 gap-6 pt-6 border-t border-[var(--store-border)]"
                     : "md:col-span-4 grid grid-cols-2 gap-6"
-                }`}
-                style={{ borderColor: project.theme.border }}
+                }
               >
                 {/* Categories Column */}
                 <div className="space-y-3">
@@ -874,10 +816,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                   <p className="text-[10px] uppercase tracking-[0.22em] font-medium">
                     Cliente
                   </p>
-                  <ul
-                    className="space-y-2 text-xs font-light"
-                    style={{ color: project.theme.textMuted }}
-                  >
+                  <ul className="space-y-2 text-xs font-light text-[var(--store-text-muted)]">
                     {(isJewelry
                       ? [
                           "Guia de Aros & Medidas",
@@ -912,18 +851,14 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
               <div
                 className={`${
                   viewport === "mobile"
-                    ? "pt-6 border-t"
+                    ? "pt-6 border-t border-[var(--store-border)]"
                     : "md:col-span-4"
                 } space-y-3`}
-                style={{ borderColor: project.theme.border }}
               >
                 <p className="text-[10px] uppercase tracking-[0.22em] font-medium">
                   {isJewelry ? "Clube Maison Aurea" : "Newsletter Atelier"}
                 </p>
-                <p
-                  className="text-xs font-light leading-relaxed"
-                  style={{ color: project.theme.textMuted }}
-                >
+                <p className="text-xs font-light leading-relaxed text-[var(--store-text-muted)]">
                   {isJewelry
                     ? "Cadastre-se para receber lançamentos exclusivos e ganhe 10% de cortesia na primeira joia."
                     : "Inscreva-se para conhecer novas coleções em primeira mão com 10% de cortesia na primeira compra."}
@@ -945,35 +880,18 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                       value={newsletterEmail}
                       onChange={(e) => setNewsletterEmail(e.target.value)}
                       placeholder="Seu melhor e-mail"
-                      className="flex-1 min-w-0 px-3 py-2.5 rounded-[4px] text-xs font-light border bg-white/80 focus:outline-none"
-                      style={{
-                        borderColor: project.theme.border,
-                        color: project.theme.textPrimary,
-                      }}
+                      className="flex-1 min-w-0 px-3 py-2.5 rounded-[4px] text-xs font-light border border-[var(--store-border)] text-[var(--store-text-primary)] bg-white/80 focus:outline-none"
                     />
                     <button
                       type="submit"
-                      className="px-4 py-2.5 rounded-[4px] text-[11px] uppercase tracking-[0.14em] font-normal shrink-0 transition-opacity hover:opacity-90"
-                      style={{
-                        backgroundColor: project.theme.accent,
-                        color: project.theme.bgPrimary,
-                      }}
+                      className="px-4 py-2.5 rounded-[4px] text-[11px] uppercase tracking-[0.14em] font-normal shrink-0 transition-opacity hover:opacity-90 bg-[var(--store-accent)] text-[var(--store-bg-primary)]"
                     >
                       Assinar
                     </button>
                   </form>
                 ) : (
-                  <div
-                    className="p-3 rounded-[4px] border text-xs flex items-center gap-2"
-                    style={{
-                      borderColor: project.theme.border,
-                      backgroundColor: project.theme.bgSecondary,
-                    }}
-                  >
-                    <Check
-                      className="w-3.5 h-3.5 shrink-0"
-                      style={{ color: project.theme.accent }}
-                    />
+                  <div className="p-3 rounded-[4px] border border-[var(--store-border)] bg-[var(--store-bg-secondary)] text-xs flex items-center gap-2">
+                    <Check className="w-3.5 h-3.5 shrink-0 text-[var(--store-accent)]" />
                     <span className="font-light">
                       Inscrição confirmada! Cupom:{" "}
                       <strong className="font-medium">BEMVINDA10</strong>
@@ -989,12 +907,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                 viewport === "mobile"
                   ? "px-5 py-5 flex-col items-start"
                   : "px-6 sm:px-14 py-6 flex-col sm:flex-row items-center"
-              } border-t flex justify-between gap-4 text-[11px] font-light`}
-              style={{
-                borderColor: project.theme.border,
-                backgroundColor: project.theme.bgSecondary,
-                color: project.theme.textMuted,
-              }}
+              } border-t border-[var(--store-border)] bg-[var(--store-bg-secondary)] text-[var(--store-text-muted)] flex justify-between gap-4 text-[11px] font-light`}
             >
               <div className="space-y-0.5">
                 <p>
@@ -1003,10 +916,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                 </p>
                 <p className="text-[10px] opacity-75">
                   E-commerce demonstrativo implantado por{" "}
-                  <strong
-                    className="font-normal"
-                    style={{ color: project.theme.textPrimary }}
-                  >
+                  <strong className="font-normal text-[var(--store-text-primary)]">
                     Lemury
                   </strong>
                 </p>
@@ -1017,12 +927,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                   (badge) => (
                     <span
                       key={badge}
-                      className="px-2 py-0.5 rounded-[3px] border text-[10px] tracking-[0.06em] uppercase"
-                      style={{
-                        borderColor: project.theme.border,
-                        backgroundColor: project.theme.bgPrimary,
-                        color: project.theme.textPrimary,
-                      }}
+                      className="px-2 py-0.5 rounded-[3px] border border-[var(--store-border)] bg-[var(--store-bg-primary)] text-[var(--store-text-primary)] text-[10px] tracking-[0.06em] uppercase"
                     >
                       {badge}
                     </span>
@@ -1042,16 +947,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className={`w-full overflow-y-auto shadow-2xl border relative transition-all ${
+            className={`w-full overflow-y-auto shadow-2xl border border-[var(--store-border)] bg-[var(--store-bg-primary)] text-[var(--store-text-primary)] relative transition-all ${
               viewport === "mobile"
                 ? "max-w-[345px] max-h-[82vh] rounded-2xl grid grid-cols-1"
                 : "max-w-[345px] md:max-w-2xl max-h-[85vh] rounded-2xl grid grid-cols-1 md:grid-cols-12"
             }`}
-            style={{
-              backgroundColor: project.theme.bgPrimary,
-              borderColor: project.theme.border,
-              color: project.theme.textPrimary,
-            }}
           >
             <button
               type="button"
@@ -1086,10 +986,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
               <div className="space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <p
-                      className="text-[10px] uppercase tracking-[0.16em] font-light"
-                      style={{ color: project.theme.textMuted }}
-                    >
+                    <p className="text-[10px] uppercase tracking-[0.16em] font-light text-[var(--store-text-muted)]">
                       {selectedProduct.category}
                     </p>
                     <h3 className="font-serif text-xl sm:text-2xl font-normal leading-tight mt-0.5">
@@ -1103,29 +1000,17 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                         currency: "BRL",
                       })}
                     </p>
-                    <p
-                      className="text-[10px] font-light"
-                      style={{ color: project.theme.textMuted }}
-                    >
+                    <p className="text-[10px] font-light text-[var(--store-text-muted)]">
                       {selectedProduct.installments}
                     </p>
                   </div>
                 </div>
 
-                <p
-                  className="text-xs sm:text-sm font-light leading-relaxed line-clamp-3"
-                  style={{ color: project.theme.textMuted }}
-                >
+                <p className="text-xs sm:text-sm font-light leading-relaxed line-clamp-3 text-[var(--store-text-muted)]">
                   {selectedProduct.description}
                 </p>
 
-                <div
-                  className="p-2.5 rounded-md border text-[11px] font-light"
-                  style={{
-                    borderColor: project.theme.border,
-                    backgroundColor: project.theme.bgSecondary,
-                  }}
-                >
+                <div className="p-2.5 rounded-md border border-[var(--store-border)] bg-[var(--store-bg-secondary)] text-[11px] font-light">
                   <strong className="font-medium">Composição:</strong>{" "}
                   {selectedProduct.composition}
                 </div>
@@ -1141,18 +1026,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                         key={opt}
                         type="button"
                         onClick={() => setSelectedOption(opt)}
-                        className="px-3 py-1.5 rounded-[4px] text-[11px] transition-all border"
-                        style={
+                        className={`px-3 py-1.5 rounded-[4px] text-[11px] transition-all border ${
                           selectedOption === opt
-                            ? {
-                              backgroundColor: project.theme.accent,
-                              color: project.theme.bgPrimary,
-                              borderColor: project.theme.accent,
-                            }
-                            : {
-                              borderColor: project.theme.border,
-                            }
-                        }
+                            ? "bg-[var(--store-accent)] text-[var(--store-bg-primary)] border-[var(--store-accent)]"
+                            : "border-[var(--store-border)]"
+                        }`}
                       >
                         {opt}
                       </button>
@@ -1164,11 +1042,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
               <button
                 type="button"
                 onClick={() => addToCart(selectedProduct, selectedOption)}
-                className="w-full py-3 px-5 rounded-[6px] text-xs uppercase tracking-[0.16em] font-medium transition-opacity hover:opacity-90"
-                style={{
-                  backgroundColor: project.theme.accent,
-                  color: project.theme.bgPrimary,
-                }}
+                className="w-full py-3 px-5 rounded-[6px] text-xs uppercase tracking-[0.16em] font-medium transition-opacity hover:opacity-90 bg-[var(--store-accent)] text-[var(--store-bg-primary)]"
               >
                 Adicionar à Sacola
               </button>
@@ -1189,49 +1063,35 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className={`w-full flex flex-col justify-between overflow-y-auto shadow-2xl border transition-all ${
+            className={`w-full flex flex-col justify-between overflow-y-auto shadow-2xl border border-[var(--store-border)] bg-[var(--store-bg-primary)] text-[var(--store-text-primary)] transition-all ${
               viewport === "mobile"
                 ? "max-w-[345px] max-h-[84vh] rounded-2xl p-4 sm:p-5"
                 : "max-w-[345px] max-h-[84vh] rounded-2xl p-4 sm:p-5 md:max-w-md md:max-h-none md:h-full md:rounded-none md:border-y-0 md:border-r-0 md:p-6"
             }`}
-            style={{
-              backgroundColor: project.theme.bgPrimary,
-              borderColor: project.theme.border,
-              color: project.theme.textPrimary,
-            }}
           >
             <div className="space-y-4 sm:space-y-5">
-              <div
-                className="flex items-center justify-between pb-3.5 border-b"
-                style={{ borderColor: project.theme.border }}
-              >
+              <div className="flex items-center justify-between pb-3.5 border-b border-[var(--store-border)]">
                 <div>
                   <h3 className="font-serif text-xl sm:text-2xl font-normal">
                     Sacola de Compras
                   </h3>
-                  <p
-                    className="text-[11px] font-light"
-                    style={{ color: project.theme.textMuted }}
-                  >
-                    {totalItems} {totalItems === 1 ? "item selecionado" : "itens selecionados"}
+                  <p className="text-[11px] font-light text-[var(--store-text-muted)]">
+                    {totalItems}{" "}
+                    {totalItems === 1 ? "item selecionado" : "itens selecionados"}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setCartOpen(false)}
                   aria-label="Fechar sacola"
-                  className="p-1.5 rounded-full border hover:opacity-75 transition-opacity"
-                  style={{ borderColor: project.theme.border }}
+                  className="p-1.5 rounded-full border border-[var(--store-border)] hover:opacity-75 transition-opacity"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
               {cart.length === 0 ? (
-                <p
-                  className="text-sm py-10 text-center font-light"
-                  style={{ color: project.theme.textMuted }}
-                >
+                <p className="text-sm py-10 text-center font-light text-[var(--store-text-muted)]">
                   Sua sacola demonstrativa está vazia.
                 </p>
               ) : (
@@ -1239,8 +1099,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                   {cart.map((item, idx) => (
                     <div
                       key={`${item.product.id}-${item.selectedOption}`}
-                      className="flex gap-3 p-2.5 rounded-lg border"
-                      style={{ borderColor: project.theme.border }}
+                      className="flex gap-3 p-2.5 rounded-lg border border-[var(--store-border)]"
                     >
                       <img
                         src={item.product.image}
@@ -1251,14 +1110,11 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                         <p className="font-serif text-sm sm:text-base font-normal leading-snug truncate">
                           {item.product.name}
                         </p>
-                        <p
-                          className="text-[11px] font-light truncate"
-                          style={{ color: project.theme.textMuted }}
-                        >
+                        <p className="text-[11px] font-light truncate text-[var(--store-text-muted)]">
                           {item.product.optionsLabel}: {item.selectedOption}
                         </p>
                         <div className="flex items-center justify-between pt-1">
-                          <div className="inline-flex items-center gap-2 border rounded px-2 py-0.5">
+                          <div className="inline-flex items-center gap-2 border border-[var(--store-border)] rounded px-2 py-0.5">
                             <button
                               type="button"
                               onClick={() => updateQuantity(idx, -1)}
@@ -1292,13 +1148,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
 
               {/* Shipping Calculator Simulation */}
               {cart.length > 0 && (
-                <div
-                  className="p-3 sm:p-3.5 rounded-lg border space-y-2.5"
-                  style={{
-                    borderColor: project.theme.border,
-                    backgroundColor: project.theme.bgSecondary,
-                  }}
-                >
+                <div className="p-3 sm:p-3.5 rounded-lg border border-[var(--store-border)] bg-[var(--store-bg-secondary)] space-y-2.5">
                   <div className="flex items-center gap-2 text-[11px] uppercase tracking-wider">
                     <Truck className="w-3.5 h-3.5 stroke-[1.5]" />
                     <span>Simulador de Frete</span>
@@ -1309,17 +1159,12 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                       value={cep}
                       onChange={(e) => setCep(e.target.value)}
                       placeholder="Digite seu CEP"
-                      className="flex-1 min-w-0 px-3 py-1.5 rounded-[4px] text-xs border bg-white text-black"
-                      style={{ borderColor: project.theme.border }}
+                      className="flex-1 min-w-0 px-3 py-1.5 rounded-[4px] text-xs border border-[var(--store-border)] bg-white text-black"
                     />
                     <button
                       type="button"
                       onClick={() => setShippingCalculated(true)}
-                      className="px-3 py-1.5 rounded-[4px] text-xs shrink-0"
-                      style={{
-                        backgroundColor: project.theme.accent,
-                        color: project.theme.bgPrimary,
-                      }}
+                      className="px-3 py-1.5 rounded-[4px] text-xs shrink-0 bg-[var(--store-accent)] text-[var(--store-bg-primary)]"
                     >
                       Calcular
                     </button>
@@ -1342,10 +1187,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
 
             {/* Checkout Action */}
             {cart.length > 0 && (
-              <div
-                className="pt-3.5 mt-3.5 border-t space-y-3"
-                style={{ borderColor: project.theme.border }}
-              >
+              <div className="pt-3.5 mt-3.5 border-t border-[var(--store-border)] space-y-3">
                 <div className="flex items-center justify-between text-xs sm:text-sm">
                   <span className="font-light">Subtotal do pedido</span>
                   <span className="text-base sm:text-lg font-medium">
@@ -1360,11 +1202,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                   <button
                     type="button"
                     onClick={() => setCheckoutDone(true)}
-                    className="w-full py-3 px-4 rounded-[6px] text-xs uppercase tracking-[0.15em] font-normal"
-                    style={{
-                      backgroundColor: project.theme.accent,
-                      color: project.theme.bgPrimary,
-                    }}
+                    className="w-full py-3 px-4 rounded-[6px] text-xs uppercase tracking-[0.15em] font-normal bg-[var(--store-accent)] text-[var(--store-bg-primary)]"
                   >
                     Simular Finalização de Compra
                   </button>
@@ -1391,10 +1229,7 @@ export function StoreShowcaseClient({ project }: { project: ConceptualProject })
                   </div>
                 )}
 
-                <div
-                  className="flex items-center justify-center gap-1.5 text-[10px] font-light"
-                  style={{ color: project.theme.textMuted }}
-                >
+                <div className="flex items-center justify-center gap-1.5 text-[10px] font-light text-[var(--store-text-muted)]">
                   <ShieldCheck className="w-3 h-3 stroke-[1.5]" />
                   <span>Ambiente Demonstrativo • Lemury</span>
                 </div>

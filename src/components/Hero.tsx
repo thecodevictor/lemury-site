@@ -147,13 +147,7 @@ export function Hero() {
                   ))}
 
                   {/* Subtle Editorial Gradient Overlay */}
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "linear-gradient(180deg, rgba(17,19,17,0.22) 0%, rgba(17,19,17,0.02) 40%, rgba(6,45,39,0.72) 100%)",
-                    }}
-                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(17,19,17,0.22)_0%,rgba(17,19,17,0.02)_40%,rgba(6,45,39,0.72)_100%)]" />
 
                   {/* Top Mini Storefront Header Inside Arch */}
                   <div className="absolute top-5 inset-x-0 px-6 flex items-center justify-between text-lemury-white">
